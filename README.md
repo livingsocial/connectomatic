@@ -2,7 +2,7 @@
 
 This gem provides a simple way of managing multiple activerecord connections.
 
-Currently it only works with Rails 3.0.11.
+Supports Rails >= 3.2
 
 ### Config structure
 
@@ -10,8 +10,8 @@ In addition to a rails project's primary database defined in `config/database.ym
 
 ### Rake tasks
 
-`rake db:create:everything` creates all the defined databases.
-`rake db:drop:everything` drops all the defined databases.
+`rake db:connectomatic:create_all` creates all the defined databases.
+`rake db:connectomatic:drop_all` drops all the defined databases.
 
 TODO: Schema dump and schema load for additional databases.
 
@@ -34,10 +34,10 @@ To run a migration on an alternate database, just invoke the `self.connectomatic
 
 ````ruby
 class CreateSomething < ActiveRecord::Migration
-      
+
       connectomatic(:my_database)
-      
-      def self.up 
+
+      def self.up
           #
       end
 

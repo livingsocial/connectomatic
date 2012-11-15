@@ -17,7 +17,7 @@ module Connectomatic
 
     initializer 'connectomatic.migrations' do |app|
       ActiveSupport.on_load(:active_record) do
-        ::ActiveRecord::Migration.send(:include, Connectomatic::ActiveRecord::Migration::ClassMethods)
+        ::ActiveRecord::Migration.send(:include, Connectomatic::ActiveRecord::Migration)
       end
     end
 

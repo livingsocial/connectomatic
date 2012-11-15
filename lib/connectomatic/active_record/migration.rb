@@ -3,39 +3,28 @@ require 'connectomatic'
 module Connectomatic
   module ActiveRecord
     module Migration
-      module ClassMethods
 
-        def self.included(base)
+      extend ActiveSupport::Concern
 
-          base.class_eval do
-            class << self
-
-              def migrate_with_connectomatic(direction)
-                using_connectomatic do
-                  migrate_without_connectomatic(direction)
-                end
-              end
-
-              def using_connectomatic
-                ::ActiveRecord::Base.establish_connection Connectomatic.config_for(@db_name || :default)
-                yield
-                ::ActiveRecord::Base.establish_connection Connectomatic.config_for(:default) if @db_name
-              end
-
-              def connectomatic(db_name)
-                @db_name = db_name
-
-                self.class_eval do
-                  class << self
-                    alias_method_chain :migrate, :connectomatic
-                  end
-                end
-              end
-
-            end
-          end
+      module ConnectionToggle
+        def migrate_with_connection_toggle(direction)
+          announce "migrating using connection #{self.connectomatic_conn}"
+          ::ActiveRecord::Base.establish_connection Connectomatic.config_for(self.connectomatic_conn)
+          migrate_without_connection_toggle(direction)
+          ::ActiveRecord::Base.establish_connection Connectomatic.config_for(:default)
+          nil
         end
       end
+
+      module ClassMethods
+        def connectomatic(name)
+          include Connectomatic::ActiveRecord::Migration::ConnectionToggle
+          alias_method_chain :migrate,:connection_toggle
+          cattr_accessor :connectomatic_conn
+          self.connectomatic_conn = name
+        end
+      end
+
     end
   end
 end

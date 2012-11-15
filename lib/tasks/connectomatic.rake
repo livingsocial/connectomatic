@@ -1,36 +1,31 @@
 require 'rake'
 
+# these still need some work...
 namespace :db do
 
-  load 'active_record/railties/databases.rake'
+  namespace :connectomatic do
 
-  def each_local_config
-    Dir.glob("config/databases/*.yml") do |filename|
-      YAML::load(File.open(filename)).each_value do |config|
-        next unless config['database']
-        local_database?(config) do
-          yield config
+    def each_local_config
+      Dir.glob("config/databases/*.yml") do |filename|
+        YAML::load(File.open(filename)).each_value do |config|
+          next unless config['database']
+          local_database?(config) do
+            yield config
+          end
         end
       end
     end
-  end
-
-  namespace :create do
 
     desc "Creates all databases defined in databases/*.yml"
-    task :everything do
+    task :create_all do
       Rake::Task["db:create:all"].invoke
       each_local_config do |config|
         create_database(config)
       end
     end
 
-  end
-
-  namespace :drop do
-
     desc "Drops all databases defined in databases/*.yml"
-    task :everything do
+    task :drop_all do
       Rake::Task["db:drop:all"].invoke
       each_local_config do |config|
         begin
@@ -42,4 +37,5 @@ namespace :db do
     end
 
   end
+
 end

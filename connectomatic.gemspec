@@ -5,9 +5,9 @@ require "connectomatic/version"
 Gem::Specification.new do |s|
   s.name        = "connectomatic"
   s.version     = Connectomatic::VERSION
-  s.authors     = ["Relevance Pair"]
-  s.email       = ["pair@thinkrelevance.com"]
-  s.homepage    = "http://github.com/relevance/connectomatic"
+  s.authors     = ["Relevance Pair,Trent Albright"]
+  s.email       = ["pair@thinkrelevance.com,trent.albright@livingsocial.com"]
+  s.homepage    = "https://github.com/livingsocial/connectomatic"
   s.summary     = %q{Manage multiple database connections in your Rails app}
   s.description = %q{Includes extensions to ActiveRecord and rake tasks to make life easy. er.}
   s.extra_rdoc_files = [ "README.md" ]
@@ -22,5 +22,5 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec"
 
-  s.add_runtime_dependency "rails", "~> 3.0"
+  s.add_runtime_dependency "rails", "~> 3.2"
 end
